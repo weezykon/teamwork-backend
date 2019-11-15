@@ -1,8 +1,14 @@
 // imports
 const express = require('express');
+const { Client } = require('pg');
 const app = express();
 
 // connection
+const db = "postgres://weezykonlocal:root@localhost/teamwork";
+const client = new Client({
+    connectionString: db
+});
+client.connect();
 
 // extracts the JSON object from the request
 const bodyParser = require('body-parser');
