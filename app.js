@@ -1,23 +1,16 @@
+/* eslint-disable import/order */
+/* eslint-disable import/newline-after-import */
 /* eslint-disable no-console */
 // imports
 const express = require('express');
-const { Client } = require('pg');
-
 const app = express();
+const cors = require('cors');
 
-// connection
-const db = 'postgres://weezykonlocal:root@localhost/teamwork';
-const client = new Client({
-  connectionString: db,
-});
-client.connect().then(() => {
-  // eslint-disable-next-line no-console
-  console.log('Successfully connected to Postgres SQL!');
-})
-  .catch((error) => {
-    console.log('Unable to connect to Postgres SQL!');
-    console.error(error);
-  });
+const dotenv = require('dotenv');
+dotenv.config();
+
+// routes
+const admin = require('./routes/admin');
 
 // extracts the JSON object from the request
 const bodyParser = require('body-parser');
@@ -32,5 +25,11 @@ app.use((req, res, next) => {
 
 // Using body parser
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+// cors
+app.use(cors());
+
+// routes use
+app.use(`/api/${process.env.VERSION}/admin`, admin);
 
 module.exports = app;

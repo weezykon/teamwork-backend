@@ -3,16 +3,14 @@
 const express = require('express');
 const router = express.Router();
 
-// middlewares
 const verify = require('./../middleware/verify');
 
 // Controllers
 const adminCtrl = require('../controllers/admin');
 
 // admin routes
-router.get('/', verify, adminCtrl.getAdmins);
-router.post('/', verify, adminCtrl.createAdmin);
-// router.post('/createEmployee', verify, adminCtrl.createEmployee);
-router.post('/login', adminCtrl.loginAdmin);
+router.get('/', verify, adminCtrl.getEmployees);
+router.post('/', verify, adminCtrl.getEmployee);
+router.post('/login', adminCtrl.loginEmployee);
 
 module.exports = router;
