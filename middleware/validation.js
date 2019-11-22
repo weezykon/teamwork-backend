@@ -23,6 +23,15 @@ const validateCreateEmployee = (data) => {
     fullname: Joi.string().min(6).required(),
     email: Joi.string().min(6).required().email(),
     username: Joi.string().min(6).required(),
+    phone: Joi.string().min(6).required(),
+  };
+  return Joi.validate(data, schema);
+};
+
+const validateCreateArticle = (data) => {
+  const schema = {
+    title: Joi.string().min(6).required(),
+    content: Joi.string().min(6).required(),
   };
   return Joi.validate(data, schema);
 };
@@ -30,3 +39,4 @@ const validateCreateEmployee = (data) => {
 module.exports.validateCreateAdmin = validateCreateAdmin;
 module.exports.validateLogin = validateLogin;
 module.exports.validateCreateEmployee = validateCreateEmployee;
+module.exports.validateCreateArticle = validateCreateArticle;

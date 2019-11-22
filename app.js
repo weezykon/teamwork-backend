@@ -9,8 +9,19 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 dotenv.config();
 
+// cloudinary import
+// eslint-disable-next-line no-unused-vars
+const { resolve } = require('path');
+// eslint-disable-next-line no-unused-vars
+const { uploader, cloudinaryConfig } = require('./config/cloudinary');
+// eslint-disable-next-line no-unused-vars
+const { multerUploads } = require('./middleware/multer');
+app.use('*', cloudinaryConfig);
+
 // routes
 const admin = require('./routes/admin');
+const employees = require('./routes/employees');
+const posts = require('./routes/posts');
 
 // extracts the JSON object from the request
 const bodyParser = require('body-parser');
@@ -31,5 +42,7 @@ app.use(cors());
 
 // routes use
 app.use(`/api/${process.env.VERSION}/admin`, admin);
+app.use(`/api/${process.env.VERSION}/`, employees);
+app.use(`/api/${process.env.VERSION}/`, posts);
 
 module.exports = app;

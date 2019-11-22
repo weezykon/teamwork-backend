@@ -9,10 +9,10 @@ module.exports = function (req, res, next) {
     const verified = jwt.verify(token, process.env.TOKEN_SECRET);
     req.user = verified;
     if (verified.role !== 'employee') {
-      return res.status(400).send('Token Invalid');
+      return res.status(400).send({ status: 'error', message: 'Token Invalid' });
     }
     next();
   } catch (error) {
-    res.status(400).send('Token Invalid');
+    return res.status(400).send({ status: 'error', message: 'Token Invalid' });
   }
 };

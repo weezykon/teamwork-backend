@@ -3,14 +3,13 @@
 const express = require('express');
 const router = express.Router();
 
-const verify = require('./../middleware/verify');
+const verify = require('./../middleware/verifyemployee');
 
 // Controllers
-const adminCtrl = require('../controllers/admin');
+const employeeCtrl = require('../controllers/employees');
 
 // admin routes
-router.get('/', verify, adminCtrl.getEmployees);
-router.post('/', verify, adminCtrl.getEmployee);
-router.post('/login', adminCtrl.loginEmployee);
+router.get('/employees', verify, employeeCtrl.getEmployees);
+router.post('/login', employeeCtrl.loginEmployee);
 
 module.exports = router;
