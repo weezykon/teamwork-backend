@@ -22,6 +22,7 @@ app.use('*', cloudinaryConfig);
 const admin = require('./routes/admin');
 const employees = require('./routes/employees');
 const posts = require('./routes/posts');
+const likes = require('./routes/like');
 
 // extracts the JSON object from the request
 const bodyParser = require('body-parser');
@@ -44,5 +45,6 @@ app.use(cors());
 app.use(`/api/${process.env.VERSION}/admin`, admin);
 app.use(`/api/${process.env.VERSION}/`, employees);
 app.use(`/api/${process.env.VERSION}/`, posts);
+app.use(`/api/${process.env.VERSION}/like`, likes);
 
 module.exports = app;
