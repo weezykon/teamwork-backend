@@ -209,3 +209,21 @@ exports.likePost = async (req, res, next) => {
     }
   });
 };
+
+// Comment Post
+exports.commentPost = async (req, res, next) => {
+  // eslint-disable-next-line no-underscore-dangle
+  const userid = req.user._id;
+  const date = Date.now();
+  const { postid, comment } = req.body;
+  // execute query
+  await pool.query('INSERT INTO comments (userid, postid, comment, date) VALUES ($1, $2, $3, $4)', [userid, postid, comment, date], (error, results) => {
+    try {
+      res.status(201).json({ status: 'success', message: 'Comment Added Sucessfully.' });
+    } catch (error) {
+      res.status(404).json({
+        error,
+      });
+    }
+  });
+};

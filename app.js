@@ -23,6 +23,7 @@ const admin = require('./routes/admin');
 const employees = require('./routes/employees');
 const posts = require('./routes/posts');
 const likes = require('./routes/like');
+const comment = require('./routes/comment');
 
 // extracts the JSON object from the request
 const bodyParser = require('body-parser');
@@ -46,5 +47,6 @@ app.use(`/api/${process.env.VERSION}/admin`, admin);
 app.use(`/api/${process.env.VERSION}/`, employees);
 app.use(`/api/${process.env.VERSION}/`, posts);
 app.use(`/api/${process.env.VERSION}/like`, likes);
+app.use(`/api/${process.env.VERSION}/comment`, comment);
 
 module.exports = app;
