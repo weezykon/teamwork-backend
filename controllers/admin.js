@@ -7,6 +7,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { pool } = require('./../config/dbconfig');
 const { validateCreateAdmin, validateLogin, validateCreateEmployee } = require('./../middleware/validation');
+const { checkAdminUsername, checkAdminEmail } = require('./../middleware/check');
 
 // get all admins
 exports.getAdmins = async (req, res, next) => {
@@ -17,7 +18,7 @@ exports.getAdmins = async (req, res, next) => {
         status: 'success', data: results.rows,
       });
     } catch (error) {
-      res.status(404).json({
+      res.status(400).json({
         error, status: 'error',
       });
     }
@@ -30,10 +31,27 @@ exports.createAdmin = async (req, res, next) => {
   const { error } = validateCreateAdmin(req.body);
   if (error) {
     const errMessage = error.details[0].message.replace('"', '');
-    return res.status(404).json({
+    return res.status(400).json({
       message: errMessage,
     });
   }
+
+  // if username is taken
+  const usernameFeedback = await checkAdminUsername(req.body.username);
+  if (usernameFeedback) {
+    return res.status(400).json({
+      status: 'error', message: usernameFeedback,
+    });
+  }
+
+  // if email already exist
+  const emailFeedback = await checkAdminEmail(req.body.email);
+  if (emailFeedback) {
+    return res.status(400).json({
+      status: 'error', message: emailFeedback,
+    });
+  }
+
   // execute query
   const { email } = req.body;
   await pool.query('SELECT * FROM admin WHERE email = $1', [email], async (error, user) => {
@@ -54,13 +72,13 @@ exports.createAdmin = async (req, res, next) => {
         try {
           res.status(201).json({ status: 'success', message: 'Admin added sucessfully.' });
         } catch (error) {
-          res.status(404).json({
+          res.status(400).json({
             error,
           });
         }
       });
     } catch (error) {
-      res.status(404).json({
+      res.status(400).json({
         error, status: 'error',
       });
     }
@@ -73,7 +91,7 @@ exports.loginAdmin = async (req, res) => {
   const { error } = validateLogin(req.body);
   if (error) {
     const errMessage = error.details[0].message.replace('"', '');
-    return res.status(404).json({
+    return res.status(400).json({
       message: errMessage,
     });
   }
@@ -83,7 +101,7 @@ exports.loginAdmin = async (req, res) => {
     try {
       // return if email is wrong
       if (results.rows === undefined || results.rows.length === 0) {
-        return res.status(404).json({
+        return res.status(400).json({
           status: 'error', message: 'Invalid Login Credentials',
         });
       }
@@ -102,7 +120,7 @@ exports.loginAdmin = async (req, res) => {
         status: 'success', message: 'Logged in sucessfully.', token, user: userData,
       });
     } catch (error) {
-      res.status(404).json({
+      res.status(400).json({
         error, status: 'error',
       });
     }
@@ -115,10 +133,27 @@ exports.createEmployee = async (req, res, next) => {
   const { error } = validateCreateEmployee(req.body);
   if (error) {
     const errMessage = error.details[0].message.replace('"', '');
-    return res.status(404).json({
+    return res.status(400).json({
       message: errMessage,
     });
   }
+
+  // if username is taken
+  const usernameFeedback = await checkEmployeeUsername(req.body.username);
+  if (usernameFeedback) {
+    return res.status(400).json({
+      status: 'error', message: usernameFeedback,
+    });
+  }
+
+  // if email already exist
+  const emailFeedback = await checkEmployeeEmail(req.body.email);
+  if (emailFeedback) {
+    return res.status(400).json({
+      status: 'error', message: emailFeedback,
+    });
+  }
+
   // execute query
   const { email } = req.body;
   await pool.query('SELECT * FROM employees WHERE email = $1', [email], async (error, user) => {
@@ -140,13 +175,13 @@ exports.createEmployee = async (req, res, next) => {
         try {
           res.status(201).json({ status: 'success', message: 'Employee added sucessfully.' });
         } catch (error) {
-          res.status(404).json({
+          res.status(400).json({
             error,
           });
         }
       });
     } catch (error) {
-      res.status(404).json({
+      res.status(400).json({
         error, status: 'error',
       });
     }
@@ -162,7 +197,7 @@ exports.employees = async (req, res, next) => {
         status: 'success', data: results.rows,
       });
     } catch (error) {
-      res.status(404).json({
+      res.status(400).json({
         error, status: 'error',
       });
     }
