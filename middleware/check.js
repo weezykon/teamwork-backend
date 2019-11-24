@@ -2,11 +2,11 @@
 /* eslint-disable no-shadow */
 const { pool } = require('./../config/dbconfig');
 
-// check employeeusername
-const checkEmployeeUsername = async (username) => {
+// check username
+const checkUsername = async (db, username) => {
   let response;
   try {
-    response = await pool.query('SELECT * FROM employees WHERE username = $1', [username]);
+    response = await pool.query(`SELECT * FROM ${db} WHERE username = $1`, [username]);
     const data = response.rows;
     if (data.length === 0) {
       return false;
@@ -18,27 +18,11 @@ const checkEmployeeUsername = async (username) => {
   }
 };
 
-// check admin username
-const checkAdminUsername = async (username) => {
+// check email
+const checkEmail = async (db, email) => {
   let response;
   try {
-    response = await pool.query('SELECT * FROM admin WHERE username = $1', [username]);
-    const data = response.rows;
-    if (data.length === 0) {
-      return false;
-    }
-    return 'Sorry buddy, Username is already taken';
-  } catch (error) {
-    // handle error
-    // do not throw anything
-  }
-};
-
-// check admin email
-const checkAdminEmail = async (email) => {
-  let response;
-  try {
-    response = await pool.query('SELECT * FROM admin WHERE email = $1', [email]);
+    response = await pool.query(`SELECT * FROM ${db} WHERE email = $1`, [email]);
     const data = response.rows;
     if (data.length === 0) {
       return false;
@@ -50,23 +34,21 @@ const checkAdminEmail = async (email) => {
   }
 };
 
-// check admin email
-const checkEmployeeEmail = async (email) => {
+const loginUsername = async (db, username) => {
   let response;
   try {
-    response = await pool.query('SELECT * FROM employees WHERE email = $1', [email]);
+    response = await pool.query(`SELECT * FROM ${db} WHERE username = $1`, [username]);
     const data = response.rows;
     if (data.length === 0) {
       return false;
     }
-    return 'Email already exists';
+    return data;
   } catch (error) {
     // handle error
     // do not throw anything
   }
 };
 
-module.exports.checkEmployeeUsername = checkEmployeeUsername;
-module.exports.checkAdminUsername = checkAdminUsername;
-module.exports.checkEmployeeEmail = checkEmployeeEmail;
-module.exports.checkAdminEmail = checkAdminEmail;
+module.exports.checkUsername = checkUsername;
+module.exports.checkEmail = checkEmail;
+module.exports.loginUsername = loginUsername;
