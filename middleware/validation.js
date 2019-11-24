@@ -12,7 +12,7 @@ const validateCreateAdmin = (data) => {
 
 const validateLogin = (data) => {
   const schema = {
-    email: Joi.string().min(6).required().email(),
+    username: Joi.string().min(6).required(),
     password: Joi.string().min(6).required(),
   };
   return Joi.validate(data, schema);
