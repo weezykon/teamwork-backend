@@ -43,7 +43,7 @@ exports.loginUser = async (req, res) => {
     // eslint-disable-next-line max-len
     name: user.fullname, email: user.email, username: user.username, phone: user.phone, date: user.date, gender: user.gender, role: user.jobrole,
   };
-  res.status(201).json({
+  res.status(200).json({
     status: 'success', message: 'Logged in sucessfully.', token, user: userData,
   });
 };
