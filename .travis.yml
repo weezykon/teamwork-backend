@@ -4,3 +4,7 @@ node_js:
 cache:
   directories:
     - "node_modules"
+
+script: "sbt clean coverage test"
+
+after_success: "sbt coveralls"
