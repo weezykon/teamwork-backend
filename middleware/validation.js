@@ -1,29 +1,23 @@
 const Joi = require('@hapi/joi');
 
 // Validation
-const validateCreateAdmin = (data) => {
-  const schema = {
-    fullname: Joi.string().min(6).required(),
-    email: Joi.string().min(6).required().email(),
-    username: Joi.string().min(6).required(),
-  };
-  return Joi.validate(data, schema);
-};
-
 const validateLogin = (data) => {
   const schema = {
-    username: Joi.string().min(6).required(),
+    email: Joi.string().min(6).required().email(),
     password: Joi.string().min(6).required(),
   };
   return Joi.validate(data, schema);
 };
 
-const validateCreateEmployee = (data) => {
+const validateCreateUser = (data) => {
   const schema = {
     fullname: Joi.string().min(6).required(),
     email: Joi.string().min(6).required().email(),
-    username: Joi.string().min(6).required(),
+    jobrole: Joi.string().min(2).required(),
     phone: Joi.string().min(6).required(),
+    address: Joi.string().min(6),
+    gender: Joi.string().min(2),
+    department: Joi.string().min(1),
   };
   return Joi.validate(data, schema);
 };
@@ -36,7 +30,6 @@ const validateCreateArticle = (data) => {
   return Joi.validate(data, schema);
 };
 
-module.exports.validateCreateAdmin = validateCreateAdmin;
 module.exports.validateLogin = validateLogin;
-module.exports.validateCreateEmployee = validateCreateEmployee;
+module.exports.validateCreateUser = validateCreateUser;
 module.exports.validateCreateArticle = validateCreateArticle;

@@ -20,7 +20,7 @@ app.use('*', cloudinaryConfig);
 
 // routes
 const admin = require('./routes/admin');
-const employees = require('./routes/employees');
+const user = require('./routes/user');
 const posts = require('./routes/posts');
 const likes = require('./routes/like');
 const comment = require('./routes/comment');
@@ -43,8 +43,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
 // routes use
-app.use(`/api/${process.env.VERSION}/admin`, admin);
-app.use(`/api/${process.env.VERSION}/`, employees);
+app.use(`/api/${process.env.VERSION}/`, admin);
+app.use(`/api/${process.env.VERSION}/`, user);
 app.use(`/api/${process.env.VERSION}/`, posts);
 app.use(`/api/${process.env.VERSION}/like`, likes);
 app.use(`/api/${process.env.VERSION}/comment`, comment);

@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 /* eslint-disable consistent-return */
@@ -5,12 +6,12 @@
 /* eslint-disable no-console */
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { pool } = require('./../config/dbconfig');
-const { validateLogin } = require('./../middleware/validation');
-const { loginUsername } = require('./../middleware/check');
+const { pool } = require('../config/dbconfig');
+const { validateLogin } = require('../middleware/validation');
+const { loginEmail } = require('../middleware/check');
 
 // login admin
-exports.loginEmployee = async (req, res) => {
+exports.loginUser = async (req, res) => {
   // validate input
   const { error } = validateLogin(req.body);
   if (error) {
@@ -21,14 +22,13 @@ exports.loginEmployee = async (req, res) => {
   }
 
   // if username exists
-  const userResult = await loginUsername('employees', req.body.username);
+  const userResult = await loginEmail(req.body.email);
   if (!userResult) {
     return res.status(400).json({
       status: 'error', message: 'Invalid Login Credentials',
     });
   }
   const user = userResult[0];
-
   // execute query
   // check password
   const validPassword = await bcrypt.compare(req.body.password, user.password);
@@ -38,10 +38,10 @@ exports.loginEmployee = async (req, res) => {
     });
   }
   // Json Web Token
-  const token = jwt.sign({ _id: user.id, role: 'employee' }, process.env.TOKEN_SECRET);
+  const token = jwt.sign({ _id: user.id, role: user.jobrole }, process.env.TOKEN_SECRET);
   const userData = {
     // eslint-disable-next-line max-len
-    name: user.fullname, email: user.email, username: user.username, phone: user.phone, date: user.date, gender: user.gender,
+    name: user.fullname, email: user.email, username: user.username, phone: user.phone, date: user.date, gender: user.gender, role: user.jobrole,
   };
   res.status(201).json({
     status: 'success', message: 'Logged in sucessfully.', token, user: userData,
@@ -49,15 +49,14 @@ exports.loginEmployee = async (req, res) => {
 };
 
 // get all employees
-exports.getEmployees = async (req, res, next) => {
+exports.getUsers = async (req, res, next) => {
   // fetch user
-  const token = req.header('auth-token');
-  const verified = jwt.verify(token, process.env.TOKEN_SECRET);
+  const userid = req.user._id;
   // execute query
-  await pool.query('SELECT id,fullname,email,city,username,phone,marital_status,gender,date FROM employees', (error, results) => {
+  await pool.query('SELECT id,fullname,email,city,address,phone,department,gender,date FROM users WHERE jobrole != $1', ['admin'], (error, results) => {
     try {
       // eslint-disable-next-line no-underscore-dangle
-      const data = results.rows.filter((row) => row.id !== verified._id);
+      const data = results.rows.filter((row) => row.id !== userid);
       res.status(200).json({
         status: 'success', data,
       });
