@@ -6,8 +6,13 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 
+// swagger
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
+
 const dotenv = require('dotenv');
 dotenv.config();
+
 
 // cloudinary import
 // eslint-disable-next-line no-unused-vars
@@ -39,8 +44,11 @@ app.use((req, res, next) => {
 // Using body parser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ limit: 1000000 }));
 // cors
 app.use(cors());
+
+app.use(`/api/${process.env.VERSION}/docs`, swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // routes use
 app.use(`/api/${process.env.VERSION}/`, admin);
