@@ -10,10 +10,7 @@ const verify = require('./../middleware/verify');
 const adminCtrl = require('../controllers/admin');
 
 // admin routes
-router.get('/', verify, adminCtrl.getAdmins);
-router.post('/', verify, adminCtrl.createAdmin);
-router.post('/login', adminCtrl.loginAdmin);
 router.get('/employees', verify, adminCtrl.employees);
-router.post('/employees', verify, adminCtrl.createEmployee);
+router.post('/auth/createuser', verify, adminCtrl.createUser);
 
 module.exports = router;

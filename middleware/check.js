@@ -3,15 +3,15 @@
 const { pool } = require('./../config/dbconfig');
 
 // check username
-const checkUsername = async (db, username) => {
+const checkPhone = async (phone) => {
   let response;
   try {
-    response = await pool.query(`SELECT * FROM ${db} WHERE username = $1`, [username]);
+    response = await pool.query('SELECT * FROM users WHERE phone = $1', [phone]);
     const data = response.rows;
     if (data.length === 0) {
       return false;
     }
-    return 'Sorry buddy, Username is already taken';
+    return 'Sorry buddy, Phone Number is already taken';
   } catch (error) {
     // handle error
     // do not throw anything
@@ -19,10 +19,10 @@ const checkUsername = async (db, username) => {
 };
 
 // check email
-const checkEmail = async (db, email) => {
+const checkEmail = async (email) => {
   let response;
   try {
-    response = await pool.query(`SELECT * FROM ${db} WHERE email = $1`, [email]);
+    response = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
     const data = response.rows;
     if (data.length === 0) {
       return false;
@@ -34,10 +34,10 @@ const checkEmail = async (db, email) => {
   }
 };
 
-const loginUsername = async (db, username) => {
+const loginEmail = async (email) => {
   let response;
   try {
-    response = await pool.query(`SELECT * FROM ${db} WHERE username = $1`, [username]);
+    response = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
     const data = response.rows;
     if (data.length === 0) {
       return false;
@@ -49,6 +49,6 @@ const loginUsername = async (db, username) => {
   }
 };
 
-module.exports.checkUsername = checkUsername;
+module.exports.checkPhone = checkPhone;
 module.exports.checkEmail = checkEmail;
-module.exports.loginUsername = loginUsername;
+module.exports.loginEmail = loginEmail;
