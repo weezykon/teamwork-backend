@@ -5,7 +5,7 @@
     "description": "API description in Markdown for Teamwork Backend Application.",
     "version": "1.0.0"
   },
-  "host": "localhost",
+  "host": "https://teamwork-backendng.herokuapp.com",
   "basePath": "/api/v1",
   "schemes": [
     "https",
