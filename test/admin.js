@@ -53,8 +53,8 @@ describe('Admin tests', () => {
     chai.request(app).get('/api/v1/users')
       .set('Authorization', '')
       .then((res) => {
-        expect(res).to.have.status(401);
-        expect(res.body.message).to.be.equal('Access Denied');
+        expect(res).to.have.status(400);
+        expect(res.body.message).to.be.equal('You do not have access to this platform');
         done();
       })
       .catch((err) => {
