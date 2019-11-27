@@ -5,6 +5,9 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
+const helmet = require('helmet');
+const compression = require('compression');
+const rateLimit = require('express-rate-limit');
 
 // swagger
 const swaggerUi = require('swagger-ui-express');
@@ -33,21 +36,36 @@ const comment = require('./routes/comment');
 // extracts the JSON object from the request
 const bodyParser = require('body-parser');
 
+// Using body parser
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ limit: 1000000 }));
+
+// app use for helmet and compression
+app.use(compression());
+app.use(helmet());
 // cors
+const isProduction = process.env.NODE_ENV === 'production';
+const origin = {
+  origin: isProduction ? 'https://teamwork-backendng.herokuapp.com' : '*',
+};
+app.use(cors(origin));
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Origin', origin);
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
   next();
 });
 
-// Using body parser
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json({ limit: 1000000 }));
-// cors
-app.use(cors());
+// rate limit
+const limiter = rateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 10, // 10 requests,
+});
 
+app.use(limiter);
+
+// swagger docs
 app.use(`/api/${process.env.VERSION}/docs`, swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // routes use
