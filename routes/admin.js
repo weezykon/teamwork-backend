@@ -11,6 +11,6 @@ const adminCtrl = require('../controllers/admin');
 
 // admin routes
 router.get('/employees', verify, adminCtrl.employees);
-router.post('/auth/createuser', verify, adminCtrl.createUser);
+router.post('/auth/createuser', adminCtrl.createUser);
 
 module.exports = router;
