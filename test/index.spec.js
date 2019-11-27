@@ -133,7 +133,6 @@ describe('tests', () => {
       .then((loginResponse) => {
         // add token to next request Authorization headers as Bearer adw3R£$4wF43F3waf4G34fwf3wc232!w1C"3F3VR
         const token = `Bearer ${loginResponse.body.token}`;
-        console.log(token);
         const user = {
           fullname: 'John Wick',
           email: 'weezykon@gmail.com',
