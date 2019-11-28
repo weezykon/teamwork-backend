@@ -81,45 +81,45 @@ describe('tests', () => {
       });
   });
 
-  // it('create user with 201', (done) => {
-  //   // mock login to get token
-  //   const validInput = {
-  //     email: 'weezykon@gmail.com',
-  //     password: 'password',
-  //   };
-  //   // send login request to the app to receive token
-  //   chai.request(app).post('/api/v1/auth/login')
-  //     .send(validInput)
-  //     .then((loginResponse) => {
-  //       // add token to next request Authorization headers as Bearer adw3R£$4wF43F3waf4G34fwf3wc232!w1C"3F3VR
-  //       const token = `Bearer ${loginResponse.body.token}`;
-  //       console.log(token);
-  //       const user = {
-  //         fullname: 'John Wick',
-  //         email: 'johnwick@wick.com',
-  //         jobrole: 'admin',
-  //         phone: '8937648383',
-  //         gender: 'Male',
-  //         address: 'dhjcehktdfjhrhjjtftgh5krjt',
-  //         department: 'IT',
-  //       };
-  //       chai.request(app).post('/api/v1/auth/createuser')
-  //         .send(user)
-  //         .set('Authorization', token)
-  //         .then((res) => {
-  //           // assertions
-  //           expect(res).to.have.status(201);
-  //           expect(res.body.message).to.be.equal('User account successfully created');
-  //           done();
-  //         })
-  //         .catch((err) => {
-  //           console.log(err.message);
-  //         });
-  //     })
-  //     .catch((err) => {
-  //       console.log(err.message);
-  //     });
-  // });
+  it('create admin user with 201', (done) => {
+    // mock login to get token
+    const validInput = {
+      email: 'weezykon@gmail.com',
+      password: 'password',
+    };
+    // send login request to the app to receive token
+    chai.request(app).post('/api/v1/auth/login')
+      .send(validInput)
+      .then((loginResponse) => {
+        // add token to next request Authorization headers as Bearer adw3R£$4wF43F3waf4G34fwf3wc232!w1C"3F3VR
+        const token = `Bearer ${loginResponse.body.token}`;
+        console.log(token);
+        const user = {
+          fullname: 'John Wick',
+          email: 'johnwick@wick.com',
+          jobrole: 'admin',
+          phone: '8937648383',
+          gender: 'Male',
+          address: 'dhjcehktdfjhrhjjtftgh5krjt',
+          department: 'IT',
+        };
+        chai.request(app).post('/api/v1/auth/createuser')
+          .send(user)
+          .set('Authorization', token)
+          .then((res) => {
+            // assertions
+            expect(res).to.have.status(201);
+            expect(res.body.message).to.be.equal('User account successfully created');
+            done();
+          })
+          .catch((err) => {
+            console.log(err.message);
+          });
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  });
 
   it('create user with existing email then return 400', (done) => {
     // mock login to get token
