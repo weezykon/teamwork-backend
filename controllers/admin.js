@@ -9,6 +9,15 @@ const { pool } = require('./../config/dbconfig');
 const { validateCreateAdmin, validateLogin, validateCreateUser } = require('./../middleware/validation');
 const { checkPhone, checkEmail, loginEmail } = require('./../middleware/check');
 
+// home
+exports.home = async (req, res, next) => {
+  res.status(200).json({
+    status: 'success',
+    message: 'You are currently at teamwork backend api',
+    'view documentation': '/api/v1/docs',
+  });
+};
+
 // create user
 exports.createUser = async (req, res, next) => {
   // validate input
