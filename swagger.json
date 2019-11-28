@@ -12,7 +12,7 @@
     "http"
   ],
   "paths": {
-    "/auth/login": {
+    "/auth/signin": {
       "post": {
         "summary": "Login.",
         "description": "Login Admin/Employee.",
@@ -74,7 +74,7 @@
         }
       }
     },
-    "/auth/createuser": {
+    "/auth/create-user": {
       "post": {
         "security": [
           {

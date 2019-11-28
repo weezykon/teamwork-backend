@@ -17,6 +17,6 @@ const postLimiter = rateLimit({
 
 // admin routes
 router.get('/users', [postLimiter, verify], userCtrl.getUsers);
-router.post('/auth/login', postLimiter, userCtrl.loginUser);
+router.post('/auth/signin', postLimiter, userCtrl.loginUser);
 
 module.exports = router;
