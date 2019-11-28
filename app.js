@@ -69,6 +69,7 @@ app.use(limiter);
 app.use(`/api/${process.env.VERSION}/docs`, swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // routes use
+app.use('/', admin);
 app.use(`/api/${process.env.VERSION}/`, admin);
 app.use(`/api/${process.env.VERSION}/`, user);
 app.use(`/api/${process.env.VERSION}/`, posts);
