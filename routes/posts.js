@@ -18,11 +18,12 @@ const postCtrl = require('../controllers/posts');
 
 // routes
 router.get('/articles/user', [postLimiter, verify], postCtrl.getPosts);
-router.get('/articles/all', [postLimiter, verify], postCtrl.getAllPosts);
+router.get('/articles', [postLimiter, verify], postCtrl.getAllPosts);
+router.get('/feeds', [postLimiter, verify], postCtrl.feeds);
 router.get('/article/:id', [postLimiter, verify], postCtrl.getPost);
-router.post('/post', [postLimiter, verify], postCtrl.createPost);
-router.put('/post', [postLimiter, verify], postCtrl.updatePost);
-router.delete('/post', [postLimiter, verify], postCtrl.deletePost);
+router.post('/articles', [postLimiter, verify], postCtrl.createPost);
+router.patch('/articles', [postLimiter, verify], postCtrl.updatePost);
+router.delete('/articles', [postLimiter, verify], postCtrl.deletePost);
 router.post('/upload', [postLimiter, verify, multer.multerUploads], postCtrl.uploadGif);
 
 module.exports = router;

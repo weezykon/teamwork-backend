@@ -19,7 +19,7 @@ exports.getPosts = async (req, res, next) => {
   // eslint-disable-next-line no-underscore-dangle
   const userid = req.user._id;
   // execute query
-  await pool.query('SELECT * FROM posts WHERE userid = $1 AND visible = $2 ORDER BY id DESC', [userid, 1], (error, results) => {
+  await pool.query('SELECT * FROM posts WHERE userid = $1 AND visible = $2 AND type = $3 ORDER BY id DESC', [userid, 1, 'text'], (error, results) => {
     try {
       // eslint-disable-next-line no-underscore-dangle
       const data = results.rows;
@@ -36,6 +36,24 @@ exports.getPosts = async (req, res, next) => {
 
 // fetch all posts
 exports.getAllPosts = async (req, res, next) => {
+  // execute query
+  await pool.query('SELECT * FROM posts WHERE visible = $1 AND WHERE type = $2 ORDER BY id DESC', [1, 'text'], (error, results) => {
+    try {
+      // eslint-disable-next-line no-underscore-dangle
+      const data = results.rows;
+      res.status(200).json({
+        status: 'success', data,
+      });
+    } catch (error) {
+      res.status(404).json({
+        error, status: 'error',
+      });
+    }
+  });
+};
+
+// fetch all posts
+exports.feeds = async (req, res, next) => {
   // execute query
   await pool.query('SELECT * FROM posts WHERE visible = $1 ORDER BY id DESC', [1], (error, results) => {
     try {
@@ -56,7 +74,7 @@ exports.getAllPosts = async (req, res, next) => {
 exports.getPost = async (req, res, next) => {
   const { id } = req.params;
   // execute query
-  await pool.query('SELECT * FROM posts WHERE id = $1 ORDER BY id DESC', [id], (error, results) => {
+  await pool.query('SELECT * FROM posts WHERE id = $1 AND type = $2 AND visible = $3 ORDER BY id DESC', [id, 'text', 1], (error, results) => {
     try {
       // eslint-disable-next-line no-underscore-dangle
       const data = results.rows;
@@ -178,7 +196,7 @@ exports.likePost = async (req, res, next) => {
   const userid = req.user._id;
   const { postid } = req.body;
   // execute query
-  await pool.query('SELECT * FROM likes WHERE userid = $1 AND postid = $2', [userid, postid], async (error, likesResults) => {
+  await pool.query('SELECT * FROM likes WHERE userid = $1 AND postid = $2 AND type = $3', [userid, postid, 'text'], async (error, likesResults) => {
     try {
       if (likesResults.rows === undefined || likesResults.rows.length === 0) {
         await pool.query('INSERT INTO likes (userid, postid) VALUES ($1, $2)', [userid, postid], (error, results) => {

@@ -32,6 +32,7 @@ const user = require('./routes/user');
 const posts = require('./routes/posts');
 const likes = require('./routes/like');
 const comment = require('./routes/comment');
+const gifs = require('./routes/gifs');
 
 // extracts the JSON object from the request
 const bodyParser = require('body-parser');
@@ -73,7 +74,8 @@ app.use('/', admin);
 app.use(`/api/${process.env.VERSION}/`, admin);
 app.use(`/api/${process.env.VERSION}/`, user);
 app.use(`/api/${process.env.VERSION}/`, posts);
+app.use(`/api/${process.env.VERSION}/`, gifs);
 app.use(`/api/${process.env.VERSION}/like`, likes);
-app.use(`/api/${process.env.VERSION}/comment`, comment);
+app.use(`/api/${process.env.VERSION}/articles/comment`, comment);
 
 module.exports = app;
