@@ -24,6 +24,5 @@ router.get('/article/:id', [postLimiter, verify], postCtrl.getPost);
 router.post('/articles', [postLimiter, verify], postCtrl.createPost);
 router.patch('/articles', [postLimiter, verify], postCtrl.updatePost);
 router.delete('/articles', [postLimiter, verify], postCtrl.deletePost);
-router.post('/upload', [postLimiter, verify, multer.multerUploads], postCtrl.uploadGif);
 
 module.exports = router;
