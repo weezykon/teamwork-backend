@@ -116,44 +116,6 @@ exports.createPost = async (req, res, next) => {
   });
 };
 
-// Upload gif
-exports.uploadGif = (req, res, next) => {
-  if (req.file) {
-    const file = dataUri(req).content;
-    return v2.uploader
-      .upload(file, {
-        resource_type: 'auto',
-      })
-      .then(async (result) => {
-        const fileUploadedUrl = result.secure_url;
-        // eslint-disable-next-line no-underscore-dangle
-        const userid = req.user._id;
-        const content = fileUploadedUrl;
-        const type = 'image';
-        const visible = 1;
-        // execute query
-        await pool.query('INSERT INTO posts (userid, type, content, visible) VALUES ($1, $2, $3, $4)', [userid, type, content, visible], (error, results) => {
-          try {
-            res.status(201).json({ status: 'success', message: 'Gif added sucessfully.' });
-          } catch (error) {
-            res.status(404).json({
-              error,
-            });
-          }
-        });
-      })
-      .catch((err) => {
-        res.status(400).json({
-          message: 'Something went wrong while processing your request',
-          success: false,
-          data: {
-            err,
-          },
-        });
-      });
-  }
-};
-
 // Update Post
 exports.updatePost = async (req, res, next) => {
   const { postid, title, content } = req.body;
