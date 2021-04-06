@@ -3,7 +3,6 @@
 const express = require('express');
 const router = express.Router();
 const rateLimit = require('express-rate-limit');
-const multer = require('../middleware/multer');
 
 const verify = require('./../middleware/verifyemployee');
 
